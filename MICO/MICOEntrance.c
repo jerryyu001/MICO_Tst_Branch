@@ -48,6 +48,10 @@
 #include "EasyLink/EasyLink.h"
 #endif
 
+#if defined (CONFIG_MODE_AIRKISS)
+#include "Airkiss/Airkiss.h"
+#endif
+
 static mico_Context_t *context;
 static mico_timer_t _watchdog_reload_timer;
 
@@ -263,25 +267,6 @@ static void _watchdog_reload_timer_handler( void* arg )
   MICOUpdateSystemMonitor(&mico_monitor, APPLICATION_WATCHDOG_TIMEOUT_SECONDS*1000-100);
 }
 
-static void mico_mfg_test(void)
-{
-  int ret;
-  extern int mfg_test(char *);
-  
-  ret = mfg_test("MXCHIP_CAGE");
-  if (ret == 0)
-    printf("MFG test success\r\n");
-  else {
-    if (ret & 1) 
-      printf("SCAN FAIL\r\n");
-    if (ret & 2)
-      printf("Connect AP FAIL\r\n");
-  }
-  
-  mico_thread_sleep(MICO_NEVER_TIMEOUT);
-}
-
-extern uint8_t EASYLINK_GPIO_Get(void); // Magicoe
 int application_start(void)
 {
   OSStatus err = kNoErr;
@@ -289,6 +274,8 @@ int application_start(void)
   struct tm currentTime;
   mico_rtc_time_t time;
   char wifi_ver[64];
+  mico_log_trace(); 
+
   /*Read current configurations*/
   context = ( mico_Context_t *)malloc(sizeof(mico_Context_t) );
   require_action( context, exit, err = kNoMemoryErr );
@@ -316,16 +303,7 @@ int application_start(void)
   MicoInit();
   MicoSysLed(true);
   mico_log("Free memory %d bytes", MicoGetMemoryInfo()->free_memory) ; 
-  
-#ifdef BOARD_LPCXPRESSO_54102
-  if (EASYLINK_GPIO_Get()== 0) {
-     printf("Easylink push\r\n");
-    PlatformEasyLinkButtonLongPressedCallback();
-  }
-  else {
-    printf("Easylink Not push\r\n");
-  }  
-#endif
+
   /* Enter test mode, call a build-in test function amd output on STDIO */
   if(MicoShouldEnterMFGMode()==true)
     mico_mfg_test();
@@ -343,10 +321,10 @@ int application_start(void)
 
   micoWlanGetIPStatus(&para, Station);
   formatMACAddr(context->micoStatus.mac, (char *)&para.mac);
-  wlan_driver_version(wifi_ver, sizeof(wifi_ver));
-  mico_log_trace(); 
-  mico_log("%s ver: %s, mac %s", APP_INFO, MicoGetVer(), context->micoStatus.mac);
-  mico_log("wifi version %s", wifi_ver);
+  MicoGetRfVer(wifi_ver, sizeof(wifi_ver));
+  mico_log("%s mxchipWNet library version: %s", APP_INFO, MicoGetVer());
+  mico_log("Wi-Fi driver version %s, mac %s", wifi_ver, context->micoStatus.mac);
+
   /*Start system monotor thread*/
   err = MICOStartSystemMonitor(context);
   require_noerr_action( err, exit, mico_log("ERROR: Unable to start the system monitor.") );
@@ -359,10 +337,9 @@ int application_start(void)
   /* Regisist notifications */
   err = MICOAddNotification( mico_notify_WIFI_STATUS_CHANGED, (void *)micoNotify_WifiStatusHandler );
   require_noerr( err, exit ); 
-#ifdef BOARD_LPCXPRESSO_54102
-   wifimgr_debug_enable(true);
-#endif
-  if(context->flashContentInRam.micoSystemConfig.configured != allConfigured){
+
+  if( context->flashContentInRam.micoSystemConfig.configured == wLanUnConfigured ||
+      context->flashContentInRam.micoSystemConfig.configured == unConfigured){
     mico_log("Empty configuration. Starting configuration mode...");
 
 #if (MICO_CONFIG_MODE == CONFIG_MODE_EASYLINK) || (MICO_CONFIG_MODE == CONFIG_MODE_EASYLINK_WITH_SOFTAP)
@@ -408,6 +385,12 @@ int application_start(void)
   #error "Wi-Fi configuration mode is not defined"?
 #endif
   }
+#ifdef MFG_MODE_AUTO
+  else if( context->flashContentInRam.micoSystemConfig.configured == mfgConfigured ){
+    mico_mfg_test();
+  }
+#endif
+
   else{
     mico_log("Available configuration. Starting Wi-Fi connection...");
     

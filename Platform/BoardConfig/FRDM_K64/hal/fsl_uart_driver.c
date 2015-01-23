@@ -570,16 +570,15 @@ uart_status_t UART_DRV_ReceiveDataBlocking(uint32_t instance, uint8_t * rxBuff,
     do
     {
         syncStatus = OSA_SemaWait(&uartState->rxIrqSync, timeout);
-    printf("semawait. ");
     }while(syncStatus == kStatus_OSA_Idle);
 
     if (syncStatus != kStatus_OSA_Success)
-    {printf("recvBlocking timeout.\n");
+    {
         /* Abort the transfer so it doesn't continue unexpectedly.*/
         UART_DRV_AbortReceivingData(instance);
         error = kStatus_UART_Timeout;
     }
-    printf("recv return. ");
+
     return error;
 }
 #endif

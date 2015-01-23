@@ -45,15 +45,7 @@
 /******************************************************
 *                    Constants
 ******************************************************/
-/* // a plan 
-const platform_uart_mapping_t uart_mapping[] =
-{
-  [MICO_UART_1] =
-  {
-    .usart                        = USART2,
-    .gpio_af                      = GPIO_AF_USART2,
-  },
-};*/
+
 
 const uint32_t uartInstance[] ={
     [MICO_UART_1] = BOARD_DEBUG_UART_INSTANCE,
@@ -201,7 +193,6 @@ OSStatus internal_uart_init( mico_uart_t uart, const mico_uart_config_t* config,
 
     EDMA_DRV_Init(&state_app, &userConfig_app);    
     UART_DRV_EdmaInit(Instance, &uartStateEdma_app, &uartConfig_app); 
-    INT_SYS_EnableIRQ(g_uartRxTxIrqId[Instance]);
 #endif
 #if RING_BUFF_ON 
   if (optional_rx_buffer != NULL)
@@ -476,10 +467,10 @@ static void thread_wakeup(void *arg)
 {
   mico_uart_t uart = *(mico_uart_t *)arg;
   while(1){
-     if(mico_rtos_get_semaphore(&uart_interfaces[ uart ].sem_wakeup, 1000) != kNoErr){
-//      gpio_irq_enable(uart_mapping[1].pin_rx->bank, uart_mapping[1].pin_rx->number, IRQ_TRIGGER_FALLING_EDGE, RX_PIN_WAKEUP_handler, &uart);
-      MicoMcuPowerSaveConfig(true);
-    }   
+//     if(mico_rtos_get_semaphore(&uart_interfaces[ uart ].sem_wakeup, 1000) != kNoErr){
+//      gpio_irq_enable(uart_mapping[uart].pin_rx->bank, uart_mapping[uart].pin_rx->number, IRQ_TRIGGER_FALLING_EDGE, RX_PIN_WAKEUP_handler, &uart);
+//      MicoMcuPowerSaveConfig(true);
+//    }   
   }
 }
 #endif

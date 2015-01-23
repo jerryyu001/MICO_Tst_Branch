@@ -6701,6 +6701,9 @@
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\LocalTcpServer.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOAppDefine.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOAppEntrance.c</name>
     </file>
     <file>
@@ -6708,6 +6711,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOConfigDelegate.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MicoDefaults.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\RemoteTcpClient.c</name>
@@ -7219,6 +7225,15 @@
       <name>WAC</name>
       <file>
         <name>$PROJ_DIR$\..\..\..\MICO\WAC\MFi_WAC_CM3_Debug.a</name>
+        <excluded>
+          <configuration>EMW3162</configuration>
+          <configuration>MICO_EVB_1</configuration>
+          <configuration>Nucleo_411RE</configuration>
+          <configuration>EMW3165</configuration>
+          <configuration>EMW3161</configuration>
+          <configuration>FRDM_K64F_SPP</configuration>
+          <configuration>LPCXpresso54102</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\MICO\WAC\MFi_WAC_CM3_Release.a</name>
@@ -7250,6 +7265,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\MICO\MICOEntrance.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\MICO\MICOMfgtest.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\MICO\MICONotificationCenter.c</name>
@@ -7348,18 +7366,6 @@
         </excluded>
         <file>
           <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\iar_startup_lpc540xx.s</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Library1127\mxchipWNet_cm4f_spi.a</name>
-          <excluded>
-            <configuration>LPCXpresso54102</configuration>
-          </excluded>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\mxchipWNet_cm4f_spi.a</name>
-          <excluded>
-            <configuration>LPCXpresso54102</configuration>
-          </excluded>
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\pinmapping.c</name>

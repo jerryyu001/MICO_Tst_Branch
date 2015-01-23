@@ -596,6 +596,9 @@
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\LocalTcpServer.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOAppDefine.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOAppEntrance.c</name>
     </file>
     <file>
@@ -603,6 +606,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MICOConfigDelegate.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\MicoDefaults.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Demos\COM.MXCHIP.SPP\RemoteTcpClient.c</name>
@@ -839,6 +845,9 @@
       <name>$PROJ_DIR$\..\..\..\MICO\MICOEntrance.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\MICO\MICOMfgtest.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\MICO\MICONotificationCenter.c</name>
     </file>
     <file>
@@ -919,12 +928,6 @@
         <name>LPCXpresso54102</name>
         <file>
           <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\iar_startup_lpc540xx.s</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Library1127\mxchipWNet_cm4f_spi.a</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\mxchipWNet_cm4f_spi.a</name>
         </file>
         <file>
           <name>$PROJ_DIR$\..\..\..\Platform\BoardConfig\LPCXpresso54102\pinmapping.c</name>
