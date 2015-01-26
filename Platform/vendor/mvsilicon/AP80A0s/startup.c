@@ -11,7 +11,8 @@
 //				2013-05-27 convert to C file to import extern .h macro definition by Robert
 //              2014-04-23 add 32KHz external oscillator capacitance input/output calibration value by Robert
 ///////////////////////////////////////////////////////////////////////////////
-#include "os.h"
+// #include "os.h"
+#include "platform_mico.h"
 
 void reset_handler(void);
 void nmi_handler(void);
@@ -24,7 +25,7 @@ void svcall_interrupt(void) __attribute__((weak));
 void pendsv_interrupt(void) __attribute__((weak));
 void systick_interrupt(void) __attribute__((weak));
 
-void GpioInterrupt(void); //__attribute__((weak));
+void GpioInterrupt(void) __attribute__((weak));//TBD
 void RtcInterrupt(void) __attribute__((weak));
 void IrInterrupt(void) __attribute__((weak));
 void FuartInterrupt(void) __attribute__((weak));

@@ -36,6 +36,7 @@
 #include "platform_mico.h"
 #include "PlatformLogging.h"
 
+const uint32_t mico_cpu_clock_hz = 96000000; //TBD!
 
 #ifdef __GNUC__
 #define WEAK __attribute__ ((weak))
@@ -56,4 +57,50 @@ extern WEAK void bootloader_start(void);
 
 static uint32_t _default_start_time = 0;
 static mico_timer_t _button_EL_timer;
+
+OSStatus mico_platform_init( void )
+{
+  platform_log( "Platform initialised" );
+  
+  return kNoErr;
+}
+
+void init_platform( void )
+{
+
+}
+
+void init_platform_bootloader( void )
+{
+  
+}
+/**==wifi reset, called by wlan_platform ==*/
+void host_platform_reset_wifi( bool reset_asserted )
+{
+  if (reset_asserted)
+    MicoGpioOutputLow( (mico_gpio_t)WL_RESET );  
+  else
+    MicoGpioOutputHigh( (mico_gpio_t)WL_RESET );  
+}
+
+/**==wifi power, called by wlan_platform ==*/
+void host_platform_power_wifi( bool power_enabled )
+{
+  
+}
+/**==platform(board) status LEDs==*/
+void MicoSysLed(bool onoff)
+{
+ // Board_LED_Set(0, onoff);
+}
+
+void MicoRfLed(bool onoff)
+{
+ // Board_LED_Set(1, onoff);
+}
+
+void Mico2rdLED(bool onoff)
+{
+//  Board_LED_Set(2, onoff);
+}
 

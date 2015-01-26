@@ -28,6 +28,7 @@
 
 #include "MicoPlatform.h"
 #include "PlatformInternal.h"
+#include "crt0.h"
 #include "platform_mico.h"
 
 #ifdef __GNUC__
@@ -36,7 +37,7 @@
 #define WEAK __weak
 #elif defined ( __CC_ARM )
     #if !defined ( WEAK )
-    #define WEAK weak
+    #define WEAK __weak
     #endif
 #endif /* ifdef __GNUC__ */
 
@@ -105,7 +106,7 @@ void init_architecture( void) {
    mico_rtos_init_mutex( &stdio_rx_mutex );
    mico_rtos_unlock_mutex ( &stdio_rx_mutex );
 #endif
-   ring_buffer_init  ( (ring_buffer_t*)&stdio_rx_buffer, (uint8_t*)stdio_rx_data, STDIO_BUFFER_SIZE );
+//   ring_buffer_init  ( (ring_buffer_t*)&stdio_rx_buffer, (uint8_t*)stdio_rx_data, STDIO_BUFFER_SIZE );
    MicoStdioUartInitialize( &stdio_uart_config, (ring_buffer_t*)&stdio_rx_buffer );
 #else  
 //   OsSetDebugFlag(0);
@@ -132,7 +133,7 @@ void MCU_CLOCKS_NOT_NEEDED( void )
 
 void wake_up_interrupt_notify( void )
 {
-  wake_up_interrupt_triggered = true;
+//  wake_up_interrupt_triggered = true;
 }
 
 
@@ -151,8 +152,9 @@ void MicoSystemReboot(void)
   NVIC_SystemReset();
 }
 
-void MicoSystemStandBy(void)
+void MicoSystemStandBy(uint32_t timeOut)
 { 
+	
 }
 
 void MicoMcuPowerSaveConfig( int enable )
@@ -184,4 +186,19 @@ void mico_thread_msleep_no_os(uint32_t milliseconds)
   while(mico_get_time_no_os() < tick_delay_start+milliseconds);  
 }
 #endif
+
+void FLASH_Unlock(void){
+
+}
+
+void FLASH_Lock(void){
+}
+
+FLASH_Status FLASH_ProgramByte(uint32_t Address, uint8_t Data){
+    return FLASH_COMPLETE;
+}
+
+void FLASH_ClearFlag(uint32_t FLASH_FLAG){
+
+}
 

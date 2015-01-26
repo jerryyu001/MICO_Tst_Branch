@@ -18,29 +18,44 @@
 extern "C" {
 #endif//__cplusplus
 
+    
 #ifndef NULL	
 #define	NULL			((void*)0)
 #endif
 
+#if !defined (FALSE) || !defined (TRUE)
 #define	FALSE			(0)
 #define	TRUE			(1)
+#endif
 	
 typedef	void(*FPCALLBACK)(void);
 
+#ifndef bool 
 typedef unsigned char   		bool;
-
+#endif
+#ifndef int8_t
 typedef signed char				int8_t;
+#endif
+#ifndef uint8_t 
 typedef unsigned char			uint8_t;
-
+#endif
+#ifndef int16_t 
 typedef signed short			int16_t;
+#endif
+#ifndef uint16_t 
 typedef unsigned short			uint16_t;
-
+#endif
+#ifndef int32_t 
 typedef signed int				int32_t;
+#endif
+#ifndef uint32_t 
 typedef unsigned int			uint32_t;
-
+#endif
+#ifndef size_t 
 typedef	unsigned int			size_t;
+#endif
 
-
+/*
 #if defined(__ICCARM__)    // For IAR compiler
 #define __ATTRIBUTE__(keyword)  keyword
 #define BITBAND
@@ -66,7 +81,7 @@ typedef	unsigned int			size_t;
 #define UNUSED
 #define __NO_INIT__
 #endif
-	
+*/ 	
 
 //大小端转换宏，ARM CPU为小端模式
 #define Le16ToCpu(Val)		(Val)

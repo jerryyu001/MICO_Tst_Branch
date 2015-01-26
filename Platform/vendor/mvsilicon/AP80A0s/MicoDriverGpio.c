@@ -57,7 +57,7 @@
 /******************************************************
 *               Variables Definitions
 ******************************************************/
-extern platform_pin_mapping_t gpio_mapping[];
+//extern platform_pin_mapping_t gpio_mapping[];
 
 /******************************************************
 *               Function Declarations
@@ -69,69 +69,25 @@ extern platform_pin_mapping_t gpio_mapping[];
 
 OSStatus MicoGpioInitialize( mico_gpio_t gpio, mico_gpio_config_t configuration )
 {
-  gpio_input_pin_user_config_t input;
-  gpio_output_pin_user_config_t output;
 
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
 
   if (gpio == WL_RESET) {
-    printf("reset %x pin intilized as %d\r\n",gpio_mapping[gpio].pinName, configuration);
   }
   
   MicoMcuPowerSaveConfig(false);
   switch(configuration) {
   case INPUT_PULL_UP:
-    input.pinName = gpio_mapping[gpio].pinName;
-    input.config.isPullEnable = true;
-    input.config.pullSelect = kPortPullUp;
-    input.config.isPassiveFilterEnabled = false;
-    input.config.interrupt = kPortIntDisabled;
-    GPIO_DRV_InputPinInit(&input);
     break;
   case INPUT_PULL_DOWN:
-    input.pinName = gpio_mapping[gpio].pinName;
-    input.config.isPullEnable = true;
-    input.config.pullSelect = kPortPullDown;
-    input.config.isPassiveFilterEnabled = false;
-    input.config.interrupt = kPortIntDisabled;
-    GPIO_DRV_InputPinInit(&input);
     break;
   case INPUT_HIGH_IMPEDANCE:
-    input.pinName = gpio_mapping[gpio].pinName;
-    input.config.isPullEnable = false;
-    input.config.pullSelect = kPortPullDown;
-    input.config.isPassiveFilterEnabled = false;
-    input.config.interrupt = kPortIntDisabled;
-    GPIO_DRV_InputPinInit(&input);
     break;
   case OUTPUT_PUSH_PULL:
-    output.pinName = gpio_mapping[gpio].pinName;
-    output.config.outputLogic = 1;
-    output.config.slewRate = kPortSlowSlewRate;
-    output.config.isOpenDrainEnabled = false;
-    output.config.driveStrength = kPortLowDriveStrength;
-    if (gpio == WL_RESET) {
-        printf("reset pin intilized as output\r\n");
-      }
-    GPIO_DRV_OutputPinInit(&output);
     break;
   case OUTPUT_OPEN_DRAIN_NO_PULL:
-    output.pinName = gpio_mapping[gpio].pinName;
-    output.config.outputLogic = 1;
-    output.config.slewRate = kPortSlowSlewRate;
-    output.config.isOpenDrainEnabled = true;
-    output.config.driveStrength = kPortLowDriveStrength;
-    GPIO_DRV_OutputPinInit(&output);
     break;
   case OUTPUT_OPEN_DRAIN_PULL_UP:
-    output.pinName = gpio_mapping[gpio].pinName;
-    output.config.outputLogic = 1;
-    output.config.slewRate = kPortSlowSlewRate;
-    output.config.isOpenDrainEnabled = true;
-    output.config.driveStrength = kPortLowDriveStrength;
-    GPIO_DRV_OutputPinInit(&output);
     break;
   default:
     MicoMcuPowerSaveConfig(true);
@@ -146,17 +102,12 @@ OSStatus MicoGpioInitialize( mico_gpio_t gpio, mico_gpio_config_t configuration 
 OSStatus MicoGpioFinalize( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
   return kNoErr;
 }
 
 OSStatus MicoGpioOutputHigh( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
-    GPIO_DRV_SetPinOutput(gpio_mapping[gpio].pinName);
 
     
   return kNoErr;
@@ -165,45 +116,29 @@ OSStatus MicoGpioOutputHigh( mico_gpio_t gpio )
 OSStatus MicoGpioOutputLow( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
 
-  GPIO_DRV_ClearPinOutput(gpio_mapping[gpio].pinName);
   return kNoErr;
 }
 
 OSStatus MicoGpioOutputTrigger( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
-  GPIO_DRV_TogglePinOutput(gpio_mapping[gpio].pinName);
   return kNoErr;    
 }
 
 bool MicoGpioInputGet( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return 0;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
-  return GPIO_DRV_ReadPinInput(gpio_mapping[gpio].pinName);
 }
 
 OSStatus MicoGpioEnableIRQ( mico_gpio_t gpio, mico_gpio_irq_trigger_t trigger, mico_gpio_irq_handler_t handler, void* arg )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
-  return gpio_irq_enable( GPIO_EXTRACT_PORT(gpio_mapping[gpio].pinName), 
-    GPIO_EXTRACT_PIN(gpio_mapping[gpio].pinName), 
-    trigger, handler, arg );
+    return kNoErr;
 }
 
 OSStatus MicoGpioDisableIRQ( mico_gpio_t gpio )
 {
   if(gpio == (mico_gpio_t)MICO_GPIO_UNUSED ) return kUnsupportedErr;
-  if (gpio_mapping[gpio].pinName == GPIO_PINS_OUT_OF_RANGE)
-    return kUnsupportedErr;
-  return gpio_irq_disable( GPIO_EXTRACT_PORT(gpio_mapping[gpio].pinName), 
-    GPIO_EXTRACT_PIN(gpio_mapping[gpio].pinName) );
+    return kNoErr;
 }

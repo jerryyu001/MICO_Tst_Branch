@@ -73,7 +73,7 @@ const platform_uart_mapping_t uart_mapping[] =
     .rxPin              = FUART_RX_PORT,      //0, 1, 2, 0xFF, detail pls see gpio.h
     .txPin              = FUART_TX_PORT,      //0, 1, 2, 0xFF, detail pls see gpio.h
     .ctsPin             = FUART_CTS_PORT,     //0, 1, 2, 0xFF, detail pls see gpio.h
-    .rtsPin             = FUART_RTC_PORT,     //0, 1, 2, 0xFF, detail pls see gpio.h
+    .rtsPin             = FUART_RTS_PORT,     //0, 1, 2, 0xFF, detail pls see gpio.h
     .usart_irq_en       = FUART_INT_EN,  //FuartInterrupt [3] or BuarInterrupt [4]
     .exFifoEn           = FUART_EXFIFO_EN, 
 #ifdef MICO_USART_DMA_EN
@@ -193,14 +193,14 @@ OSStatus MicoUartSend( mico_uart_t uart, const void* data, uint32_t size )
 {
     uint32_t ret;
     //  /* Reset DMA transmission result. The result is assigned in interrupt handler */
-   uart_interfaces[uart].tx_dma_result = kGeneralErr;
+  // uart_interfaces[uart].tx_dma_result = kGeneralErr;
   
   MicoMcuPowerSaveConfig(false);  
    
   if (uart == MICO_UART_1)
-    ret = FuartSend(date, size); 
+    ret = FuartSend((uint8_t *)data, size); 
   else 
-    ret = BuartSend(date, size);
+    ret = BuartSend((uint8_t *)data, size);
   if (ret > 0){
         #ifndef NO_MICO_RTOS
             mico_rtos_set_semaphore( &uart_interfaces[ uart ].tx_complete );
@@ -296,7 +296,7 @@ static OSStatus platform_uart_receive_bytes( mico_uart_t uart, void* data, uint3
 {
     uint32_t retVal = 0;
   /* Reset DMA transmission result. The result is assigned in interrupt handler */
-   uart_interfaces[uart].rx_dma_result = kGeneralErr;
+ //  uart_interfaces[uart].rx_dma_result = kGeneralErr;
    if ( uart == MICO_UART_1 ){
     retVal = FuartRecv(data, size, timeout); //TBD!
    } else {
@@ -324,7 +324,7 @@ static OSStatus platform_uart_receive_bytes( mico_uart_t uart, void* data, uint3
       }
     }    
 #endif
-    return uart_interfaces[uart].rx_dma_result;
+    return kGeneralErr; //uart_interfaces[uart].rx_dma_result;
   }   
   return kGeneralErr;              // kNoErr;
 }

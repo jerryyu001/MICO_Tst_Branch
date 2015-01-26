@@ -14,7 +14,7 @@
 #include <rt_misc.h>
 #include "platform_common_config.h"
 #include "MicoPlatform.h"
-#include "stm32f2xx.h"
+//#include "stm32f2xx.h"
 #include "patch_keil.h"
 
 extern void vPortSVCHandler(void);
@@ -30,6 +30,7 @@ size_t strnlen(const char *s, size_t count)
                 return sc - s;    
 } 
 
+#ifdef __MICROLIB
 int fputc(int ch, FILE *f) {
 #if 0
     while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
@@ -40,7 +41,7 @@ int fputc(int ch, FILE *f) {
   return ch;
 #endif 
 }
-#ifdef __MICROLIB
+
 void exit(int x)
 {
     x = x;

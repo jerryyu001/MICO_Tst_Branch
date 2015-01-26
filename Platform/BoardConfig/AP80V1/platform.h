@@ -9,7 +9,7 @@
 
 #include "platform_common_config.h"
 #include "platform_wifi_config.h"   //option if config wifi in here or platform_common_config.h
-#include "board.h"                  //can also use implemented configurations. Like this "board.h"
+//#include "board.h"                  //can also use implemented configurations. Like this "board.h"
 
 #pragma once
 
@@ -38,7 +38,7 @@ typedef enum
   MICO_GPIO_UNUSED = -1,                //Reserved to confirm which port unused.
   MICO_GPIO_WLAN_POWERSAVE_CLOCK = 0,   //If wifi module need external clock to sleep mode.
   WL_GPIO0,                             //Define a GPIO to wifi module
- // WL_GPIO1,                           //Commemt it if don't need it.Like this Line
+  WL_GPIO1,                           //Commemt it if don't need it.Like this Line
   WL_REG_RESERVED,                      //Wifi module regulator
   WL_RESET,                             //Wifi Reset port 
   MICO_SYS_LED,                         //A LED for system status.
@@ -227,7 +227,7 @@ typedef enum
 #define BOOT_END_ADDRESS            (uint32_t)0x08003FFF
 #define BOOT_FLASH_SIZE             (BOOT_END_ADDRESS - BOOT_START_ADDRESS + 1) /* 16k bytes*/
 
-#define MICO_FLASH_FOR_DRIVER       MICO_SPI_FLASH
+//#define MICO_FLASH_FOR_DRIVER       MICO_SPI_FLASH //TBD! maybe in const segment
 #define DRIVER_START_ADDRESS        (uint32_t)0x00002000
 #define DRIVER_END_ADDRESS          (uint32_t)0x0003FFFF
 #define DRIVER_FLASH_SIZE           (DRIVER_END_ADDRESS - DRIVER_START_ADDRESS + 1) /* 248k bytes*/

@@ -56,8 +56,8 @@ typedef struct {
 } platform_uart_mapping_t;
 
 // Modules' clock used by MICO
-#define MICO_MODULE_CLK_SWITCH          ALL_MODULE_CLK_SWITH
-#define MICO_MODULE_CLK_GATE_SWITCH     ALL_MODULE_CLK_GATE_SWITH
+#define MICO_MODULE_CLK_SWITCH          ALL_MODULE_CLK_SWITCH
+#define MICO_MODULE_CLK_GATE_SWITCH     ALL_MODULE_CLK_GATE_SWITCH
 
 extern const platform_uart_mapping_t uart_mapping[];
 
