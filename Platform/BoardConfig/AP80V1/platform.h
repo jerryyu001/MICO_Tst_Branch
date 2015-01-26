@@ -53,9 +53,9 @@ typedef enum
  * Typedef peripherals 
  * Must be defined,if want use MICO Driver to develp applications.
  * Can implement mapping(s), which mentioned in following,in platform.c (recommend to named platform.c)
- * Maybe not all of peripherals wanted,can control it by #macroes HAVE_XXX
+ * Maybe not all of peripherals wanted,can control it by #macroes MICO_HAVE_XXX
  **********************/
-#ifdef HAVE_GPIO
+#ifdef MICO_HAVE_GPIO
 /**
  * Define all of the GPIOs will be used besides "mico_common_gpio_t".
  * May need to implement a good gpio mapping[] type/struct used in "MicoDriverGpio.c"
@@ -96,7 +96,7 @@ typedef enum
 } mico_gpio_t;
 #endif 
 
-#ifdef HAVE_SPI
+#ifdef MICO_HAVE_SPI
 /**
  * Define all of the SPIs will be used .
  * May need to implement a good SPI mapping[] type/struct used in "MicoDriverSpi.c"
@@ -108,7 +108,7 @@ typedef enum
 } mico_spi_t;
 #endif 
 
-#ifdef HAVE_I2C
+#ifdef MICO_HAVE_I2C
 /**
  * Define all of the I2Cs will be used .
  * May need to implement a good I2C mapping[] type/struct used in "MicoDriverI2c.c"
@@ -120,7 +120,7 @@ typedef enum
 } mico_i2c_t;
 #endif 
 
-#ifdef HAVE_PWM
+#ifdef MICO_HAVE_PWM
 /**
  * Define all of the PWMs will be used .
  * May need to implement a good PWM mapping[] type/struct used in "MicoDriverPwm.c"
@@ -134,7 +134,7 @@ typedef enum
 } mico_pwm_t;
 #endif 
 
-#ifdef HAVE_ADC
+#ifdef MICO_HAVE_ADC
 /**
  * Define all of the ADCs will be used .
  * May need to implement a good ADC mapping[] type/struct used in "MicoDriverAdc.c"
@@ -148,7 +148,7 @@ typedef enum
 } mico_adc_t;
 #endif 
 
-#ifdef HAVE_UART
+#ifdef MICO_HAVE_UART
 /**
  * Define all of the UARTs will be used .
  * May need to implement a good uart mapping[] type/struct used in "MicoDriverUart.c"
@@ -163,9 +163,29 @@ typedef enum
 /* The number of UART interfaces this hardware platform has */
 #define NUMBER_OF_UART_INTERFACES   2               //How many UARTs will use.
 #define STDIO_UART                  MICO_UART_1     //Which UART used as STDIO.
+/* MICO UART 1 is Fuart default,change it in MICODriverUart */
+#define FUART_RX_PORT       1     //0, 1, 2, 0xFF, detail pls see gpio.h
+#define FUART_TX_PORT       1      //0, 1, 2, 0xFF, detail pls see gpio.h
+#define FUART_CTS_PORT      NULL     //0, 1, 2, 0xFF, detail pls see gpio.h
+#define FUART_RTS_PORT      NULL     //0, 1, 2, 0xFF, detail pls see gpio.h
+#define FUART_INT_EN        FALSE  //FuartInterrupt [3] or BuarInterrupt [4]
+#define FUART_EXFIFO_EN     FALSE 
+#ifdef MICO_USART_DMA_EN
+  #define FUART_DMA_CH      1
+#endif
+/* MICO UART 2 is Buart default */
+#define BUART_RX_PORT       1     //0, 1, 2, 3, 0xFF, detail pls see gpio.h
+#define BUART_TX_PORT       1      //0, 1, 2, 3, 0xFF, detail pls see gpio.h
+#define BUART_CTS_PORT      1     //0, 1, 2, 0xFF, detail pls see gpio.h
+#define BUART_RTS_PORT      1     //0, 1, 2, 0xFF, detail pls see gpio.h
+#define BUART_INT_EN        TRUE  //FuartInterrupt [3] or BuarInterrupt [4]
+#define BUART_EXFIFO_EN     TRUE 
+#ifdef MICO_USART_DMA_EN
+  #define BUART_DMA_CH      1
+#endif
 #endif 
 
-#ifdef HAVE_FLASH
+#ifdef MICO_HAVE_FLASH
 /**
  * Define all of the FLASHs will be used .
  * May need to implement a good flash mapping[] type/struct used in "MicoDriverFlash.c"
@@ -173,7 +193,7 @@ typedef enum
 typedef enum
 {
   MICO_SPI_FLASH,
-  MICO_INTERNAL_FLASH,
+//  MICO_INTERNAL_FLASH,
 } mico_flash_t;
 
 #define USE_MICO_SPI_FLASH              //Use Mico driver of spi_flash. In Common/Drivers/spi_flash/
@@ -189,12 +209,12 @@ typedef enum
 #define INTERNAL_FLASH_SIZE             (INTERNAL_FLASH_END_ADDRESS - INTERNAL_FLASH_START_ADDRESS + 1)
 
 #define SPI_FLASH_START_ADDRESS         (uint32_t)0x00000000
-#define SPI_FLASH_END_ADDRESS           (uint32_t)0x000FFFFF
+#define SPI_FLASH_END_ADDRESS           (uint32_t)0x00FFFFFF
 #define SPI_FLASH_SIZE                  (SPI_FLASH_END_ADDRESS - SPI_FLASH_START_ADDRESS + 1)
 
-#define MICO_FLASH_FOR_APPLICATION  MICO_INTERNAL_FLASH
-#define APPLICATION_START_ADDRESS   (uint32_t)0x08004000
-#define APPLICATION_END_ADDRESS     (uint32_t)0x0805FFFF
+#define MICO_FLASH_FOR_APPLICATION  MICO_SPI_FLASH
+#define APPLICATION_START_ADDRESS   (uint32_t)0x00000000
+#define APPLICATION_END_ADDRESS     (uint32_t)0x0005FFFF
 #define APPLICATION_FLASH_SIZE      (APPLICATION_END_ADDRESS - APPLICATION_START_ADDRESS + 1) /* 368k bytes*/
 
 #define MICO_FLASH_FOR_UPDATE       MICO_SPI_FLASH
@@ -202,7 +222,7 @@ typedef enum
 #define UPDATE_END_ADDRESS          (uint32_t)0x0009FFFF
 #define UPDATE_FLASH_SIZE           (UPDATE_END_ADDRESS - UPDATE_START_ADDRESS + 1) /* 384k bytes*/
 
-#define MICO_FLASH_FOR_BOOT         MICO_INTERNAL_FLASH
+#define MICO_FLASH_FOR_BOOT         MICO_SPI_FLASH
 #define BOOT_START_ADDRESS          (uint32_t)0x08000000
 #define BOOT_END_ADDRESS            (uint32_t)0x08003FFF
 #define BOOT_FLASH_SIZE             (BOOT_END_ADDRESS - BOOT_START_ADDRESS + 1) /* 16k bytes*/

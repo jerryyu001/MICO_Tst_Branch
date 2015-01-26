@@ -13,16 +13,16 @@
  *  Config peripherals used in the board.
  *  MICO Drivers.
  *====================== */
-#define HAVE_GPIO
-#define HAVE_UART
-#define HAVE_SPI
-#define HAVE_PWM
-#define HAVE_ADC
-#define HAVE_I2C
-#define HAVE_FLASH
-#define HAVE_RNG
-#define HAVE_RTC
-#define HAVE_WDG
+#define MICO_HAVE_GPIO
+#define MICO_HAVE_UART
+#define MICO_HAVE_SPI
+#define MICO_HAVE_PWM
+#define MICO_HAVE_ADC
+#define MICO_HAVE_I2C
+#define MICO_HAVE_FLASH
+#define MICO_HAVE_RNG
+#define MICO_HAVE_RTC
+#define MICO_HAVE_WDG
 
 
 #endif

@@ -110,7 +110,7 @@ void init_architecture( void) {
 #else  
 //   OsSetDebugFlag(0);
 #endif
-
+    CacheInit(); // TBD! maybe mv to above.
 
 }
 

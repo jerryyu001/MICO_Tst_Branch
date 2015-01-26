@@ -31,7 +31,7 @@ size_t strnlen(const char *s, size_t count)
 } 
 
 int fputc(int ch, FILE *f) {
-#if 1
+#if 0
     while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
     USART_SendData(USART1, (uint8_t) ch);
     return ch;

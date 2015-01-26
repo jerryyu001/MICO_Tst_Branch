@@ -1,14 +1,15 @@
 /**
 ******************************************************************************
-* @file    platform_mico.h 
-* @author  Jerry Yu
-* @version 0.0.1
-* @date    Jan-22nd,2015
-* @brief   This file provide all the headers of functions for platform_mico
+* @file    platform.c 
+* @author  William Xu
+* @version V1.0.0
+* @date    05-May-2014
+* @brief   This file provides all MICO Peripherals mapping table and platform
+*          specific funcgtions.
 ******************************************************************************
 *
 *  The MIT License
-*  Copyright © 2015 MXCHIP Inc.
+*  Copyright (c) 2014 MXCHIP Inc.
 *
 *  Permission is hereby granted, free of charge, to any person obtaining a copy 
 *  of this software and associated documentation files (the "Software"), to deal
@@ -30,37 +31,29 @@
 */ 
 
 
+#include "MICOPlatform.h"
+#include "platform_wifi_config.h"
+#include "platform_mico.h"
+#include "PlatformLogging.h"
 
 
-#ifndef __PLATFORM_MICO_H__
-#define __PLATFORM_MICO_H__
+#ifdef __GNUC__
+#define WEAK __attribute__ ((weak))
+#elif defined ( __IAR_SYSTEMS_ICC__ )
+#define WEAK __weak
+#elif defined ( __CC_ARM ) //KEIL
+    #if !defined ( WEAK )
+    #define WEAK __weak
+    #endif
+#endif /* ifdef __GNUC__ */
 
-#include "ap80a0.h" //TBD!
 
-typedef enum {
-    Fuart,
-    Buart,
-}usart_p;
 
-typedef struct {
-    usart_p             usart;      //which usart
-    uint8_t             rxPin;      //0, 1, 2, 0xFF, detail pls see gpio.h
-    uint8_t             txPin;      //0, 1, 2, 0xFF, detail pls see gpio.h
-    uint8_t             ctsPin;     //0, 1, 2, 0xFF, detail pls see gpio.h
-    uint8_t             rtsPin;     //0, 1, 2, 0xFF, detail pls see gpio.h
-    bool                usart_irq_en;  //Enable FuartInterrupt or BuarInterrupt
-    bool                exFifoEn;
-#ifdef MICO_USART_DMA_EN
-    uint8_t             dmaCH;
-#endif
-} platform_uart_mapping_t;
+extern WEAK void PlatformEasyLinkButtonClickedCallback(void);
+extern WEAK void PlatformStandbyButtonClickedCallback(void);
+extern WEAK void PlatformEasyLinkButtonLongPressedCallback(void);
+extern WEAK void bootloader_start(void);
 
-// Modules' clock used by MICO
-#define MICO_MODULE_CLK_SWITCH          ALL_MODULE_CLK_SWITH
-#define MICO_MODULE_CLK_GATE_SWITCH     ALL_MODULE_CLK_GATE_SWITH
-
-extern const platform_uart_mapping_t uart_mapping[];
-
-#endif
-
+static uint32_t _default_start_time = 0;
+static mico_timer_t _button_EL_timer;
 
