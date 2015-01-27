@@ -61,7 +61,7 @@
 #include "wakeup.h"
 #include "watchdog.h"
 #include "ap80xx_flash.h"
-#include "debug.h"
+//#include "debug.h"
 
 #endif
 

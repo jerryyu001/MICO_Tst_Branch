@@ -18,7 +18,6 @@
 //if comment semihosting , printf will not work. and must fputc but not putc
 #pragma import(__use_no_semihosting_swi)
 
-
 extern int  sendchar(int ch);  /* in Serial.c */
 extern int  getkey(void);      /* in Serial.c */
 extern long timeval;           /* in Time.c   */
@@ -66,6 +65,11 @@ void _ttywrch(int ch) {
 
 void _sys_exit(int return_code) {
   while (1);    /* endless loop */
+}
+
+char *_sys_command_string (char *cmd, int len) 
+{
+    return (cmd);
 }
 #endif
 

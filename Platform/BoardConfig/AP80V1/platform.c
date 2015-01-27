@@ -67,7 +67,6 @@ OSStatus mico_platform_init( void )
 
 void init_platform( void )
 {
-
 }
 
 void init_platform_bootloader( void )

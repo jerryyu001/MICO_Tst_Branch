@@ -13,7 +13,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // #include "os.h"
 #include "platform_mico.h"
-
+#define OS_VERSION
+#define CFG_SYS_STACK_SIZE				(0x200)
 void reset_handler(void);
 void nmi_handler(void);
 void hardfault_handler(void);
@@ -84,6 +85,74 @@ static void (*const vect_table[])(void) __attribute__((section("EXCEPT_VECTS")))
     WatchDogInterrupt,			//#31: WatchDog
 };
 		
+void trapfault_handler_dumpstack(unsigned long* irqs_regs, unsigned long* user_regs)
+{
+	DBG("\n>>>>>>>>>>>>>>[");
+	switch(__get_IPSR())
+	{
+		case	3:
+			DBG("Hard Fault");
+			break;
+
+		case	4:
+			DBG("Memory Manage");
+			break;
+
+		case	5:
+			DBG("Bus Fault");
+			break;
+
+		case	6:
+			DBG("Usage Fault");
+			break;
+
+		default:
+			DBG("Unknown Fault %d", __get_IPSR());
+			break;
+	}
+	DBG(",corrupt,dump registers]>>>>>>>>>>>>>>>>>>\n");
+
+	DBG("R0  = 0x%08X\n", irqs_regs[0]);
+	DBG("R1  = 0x%08X\n", irqs_regs[1]);
+	DBG("R2  = 0x%08X\n", irqs_regs[2]);
+	DBG("R3  = 0x%08X\n", irqs_regs[3]);
+
+	DBG("R4  = 0x%08X\n", user_regs[0]);
+	DBG("R5  = 0x%08X\n", user_regs[1]);
+	DBG("R6  = 0x%08X\n", user_regs[2]);
+	DBG("R7  = 0x%08X\n", user_regs[3]);
+	DBG("R8  = 0x%08X\n", user_regs[4]);
+	DBG("R9  = 0x%08X\n", user_regs[5]);
+	DBG("R10 = 0x%08X\n", user_regs[6]);
+	DBG("R11 = 0x%08X\n", user_regs[7]);
+
+	DBG("R12 = 0x%08X\n", irqs_regs[4]);
+	DBG("SP  = 0x%08X\n", &irqs_regs[8]);
+	DBG("LR  = 0x%08X\n", irqs_regs[5]);
+	DBG("PC  = 0x%08X\n", irqs_regs[6]);
+	DBG("PSR = 0x%08X\n", irqs_regs[7]);
+
+	DBG("BFAR = 0x%08X\n", (*((volatile unsigned long*)(0xE000ED38))));
+	DBG("CFSR = 0x%08X\n", (*((volatile unsigned long*)(0xE000ED28))));
+	DBG("HFSR = 0x%08X\n", (*((volatile unsigned long*)(0xE000ED2C))));
+	DBG("DFSR = 0x%08X\n", (*((volatile unsigned long*)(0xE000ED30))));
+	DBG("AFSR = 0x%08X\n", (*((volatile unsigned long*)(0xE000ED3C))));
+	//DBG("Terminated@%u ms\n", auxtmr_count_get());
+	/*
+	#ifdef	DEBUG
+	if(*(unsigned long*)0x20000000 != 0xA5A5A5A5)
+	{
+		DBG("Error:System Stack Overflow\n");
+		return;
+	}
+	#endif //DEBUG
+	*/
+	/*
+	 * indefinitely deadloop
+	 */
+	while(1);;;
+}
+
 //******************************************************************************
 //
 // This is the code that gets called when the processor first starts execution
@@ -151,12 +220,17 @@ CODE_ENCRYP_FLAG	DCD  0xFFFFFFFF
 	IMPORT	|Region$$Table$$Limit|
 
 	IMPORT  main
+#ifdef  OS_VERSION
 	IMPORT	mmm_pool_top 
-
+#endif
 		//the follow code crack the uvision startup code -huangyucai20111018
 __mv_main
-		//set up the system stack	
+		//set up the system stack
+#ifdef OS_VERSION
 		LDR		SP,=mmm_pool_top 
+#else
+		LDR		SP,=0x20008000
+#endif 
 		SUB		SP,SP,#0x1000
 		LDR		R0,=__initial_sp
 		SUB		R0,R0,#CFG_SYS_STACK_SIZE
@@ -270,6 +344,24 @@ usagefault_handler PROC
 		B		trapfault_handler_dumpstack
 		ENDP
 
+SVC_Handler     PROC
+                EXPORT  SVC_Handler                [WEAK]
+				IMPORT vPortSVCHandler
+                B vPortSVCHandler
+                ENDP
+
+PendSV_Handler  PROC
+                EXPORT  PendSV_Handler             [WEAK]
+				IMPORT xPortPendSVHandler
+                B xPortPendSVHandler
+                ENDP
+
+SysTick_Handler PROC
+                EXPORT  SysTick_Handler            [WEAK]
+                IMPORT xPortSysTickHandler
+                B xPortSysTickHandler
+                ENDP
+
 		ALIGN
 
 //******************************************************************************
@@ -289,8 +381,8 @@ usagefault_handler PROC
 //******************************************************************************
 #ifdef __MICROLIB
         EXPORT  __initial_sp
-        //EXPORT  __heap_base
-        //EXPORT  __heap_limit
+        EXPORT  __heap_base
+        EXPORT  __heap_limit
 #else
         EXPORT  __initial_sp
         EXPORT  __heap_base

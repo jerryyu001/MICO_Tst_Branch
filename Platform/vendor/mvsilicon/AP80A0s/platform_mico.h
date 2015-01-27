@@ -36,6 +36,13 @@
 #define __PLATFORM_MICO_H__
 
 #include "ap80a0.h" //TBD!
+#include "MicoRTOS.h"
+
+#if defined(DEBUG)
+	#define	DBG(format, ...)		printf(format, ##__VA_ARGS__)
+#else
+	#define	DBG(format, ...)
+#endif
 
 typedef enum {
     Fuart,
