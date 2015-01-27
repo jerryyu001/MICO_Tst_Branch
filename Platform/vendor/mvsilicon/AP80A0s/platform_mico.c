@@ -83,6 +83,8 @@ WEAK void init_memory( void ){
 
 void init_architecture( void) {
     
+    ClkPorRcToDpll(0); // 0: 32768Hz, from Rc48MHz to Dpll sysclk 96Mhz 
+    CacheInit(); // TBD! maybe mv to above.
     ClkModuleEn(MICO_MODULE_CLK_SWITCH);
     ClkModuleGateEn(MICO_MODULE_CLK_GATE_SWITCH);
 
@@ -93,7 +95,7 @@ void init_architecture( void) {
     //Flash
     SpiFlashInfoInit();
 
-    ClkPorRcToDpll(0); // 0: 32768Hz, from Rc48MHz to Dpll sysclk 96Mhz 
+ //   ClkPorRcToDpll(0); // 0: 32768Hz, from Rc48MHz to Dpll sysclk 96Mhz 
 
     //GD flash , True mean enable hpm.
     SpiFlashClkSet(FLASHCLK_SYSCLK_SEL,TRUE);
@@ -111,7 +113,7 @@ void init_architecture( void) {
 #else  
 //   OsSetDebugFlag(0);
 #endif
-    CacheInit(); // TBD! maybe mv to above.
+  //  CacheInit(); // TBD! maybe mv to above.
 
 }
 
