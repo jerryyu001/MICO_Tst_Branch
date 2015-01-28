@@ -51,7 +51,7 @@
 #include "sdram.h"
 #include "sleep.h"
 #include "spi_flash.h"
-#include "spim.h"
+//#include "spim.h"
 #include "spis.h"
 #include "timeout.h"
 #include "timer.h"

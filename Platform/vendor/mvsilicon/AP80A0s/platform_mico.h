@@ -35,8 +35,34 @@
 #ifndef __PLATFORM_MICO_H__
 #define __PLATFORM_MICO_H__
 
-#include "ap80a0.h" //TBD!
+//#include "ap80a0.h" //TBD!
 #include "MicoRTOS.h"
+#include "type.h"
+//#include "app_config.h"
+#include "rtc.h"
+#include "delay.h"
+//#include "os.h"
+#include "timeout.h"
+#include "chip_info.h"
+#include "uart.h"
+#include "wakeup.h"
+#include "watchdog.h"
+#include "clk.h"
+#include "spi_flash.h"
+#include "cache.h"
+#include "gpio.h"
+#include "dac.h"
+#include "audio_adc.h"
+#include "timer.h"
+#include "adc.h"
+#include "ir.h"
+#include "host_hcd.h"
+#include "watchdog.h"
+#include "mixer.h"
+#include "eq.h"
+#include "lcd_seg.h"
+#include "ap80xx_flash.h"
+
 
 #if defined(DEBUG)
 	#define	DBG(format, ...)		printf(format, ##__VA_ARGS__)

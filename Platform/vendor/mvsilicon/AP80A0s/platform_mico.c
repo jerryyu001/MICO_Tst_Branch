@@ -61,6 +61,22 @@ mico_mutex_t        stdio_rx_mutex;
 mico_mutex_t        stdio_tx_mutex;
 #endif /* #ifndef MICO_DISABLE_STDIO */
 
+void Osc32kExtCapCalibrate(void){
+    unsigned short Val;
+/*    char        cmd[3] = "\x35\xBA\x69";
+    SPI_FLASH_INFO flash_info = {0};
+
+    SpiFlashGetInfo(&flash_info);
+    
+    if(SpiFlashIOCtl(IOCTL_FLASH_UNPROTECT, cmd, sizeof(cmd)) != FLASH_NONE_ERR){
+        return;
+    }
+*/
+    if(SpiFlashRead(0xA0, (unsigned char*)&Val, 2) != FLASH_NONE_ERR){
+        return;
+    }
+    ClkOsc32kNoNeedExtCapacitanceSet((char)Val, (char)(Val >> 8));
+}
 
 /*Boot to mico application form APPLICATION_START_ADDRESS */
 void startApplication( void ){
@@ -88,9 +104,12 @@ void init_architecture( void) {
     ClkModuleEn(MICO_MODULE_CLK_SWITCH);
     ClkModuleGateEn(MICO_MODULE_CLK_GATE_SWITCH);
 
+    WaitMs(200);
+    WdgDis();//TBD!
+    
     SysGetWakeUpFlag();
 
-    SysPowerKeyInit(POWERKEY_MODE_SLIDE_SWITCH, 2000);//refer to power monitor.
+    SysPowerKeyInit(POWERKEY_MODE_SLIDE_SWITCH, 500);//refer to power monitor.
 
     //Flash
     SpiFlashInfoInit();
@@ -100,21 +119,31 @@ void init_architecture( void) {
     //GD flash , True mean enable hpm.
     SpiFlashClkSet(FLASHCLK_SYSCLK_SEL,TRUE);
 
+  //  SarAdcLdoinVolInit();
+  //  LcdCtrlRegInit();
+
 #ifndef MICO_DISABLE_STDIO
 //    OsSetDebugFlag(1);
+//  GpioFuartRxIoConfig(1); //1.b[6] 0xFF disable rx.
+//  GpioFuartTxIoConfig(1);//1.b[7], FUART_TX_PORT
+//  FuartInit(115200, 8, 0, 1);//TBD
 #ifndef NO_MICO_RTOS
    mico_rtos_init_mutex( &stdio_tx_mutex );
    mico_rtos_unlock_mutex ( &stdio_tx_mutex );
    mico_rtos_init_mutex( &stdio_rx_mutex );
    mico_rtos_unlock_mutex ( &stdio_rx_mutex );
 #endif
-//   ring_buffer_init  ( (ring_buffer_t*)&stdio_rx_buffer, (uint8_t*)stdio_rx_data, STDIO_BUFFER_SIZE );
+ //  ring_buffer_init  ( (ring_buffer_t*)&stdio_rx_buffer, (uint8_t*)stdio_rx_data, STDIO_BUFFER_SIZE );
    MicoStdioUartInitialize( &stdio_uart_config, (ring_buffer_t*)&stdio_rx_buffer );
 #else  
 //   OsSetDebugFlag(0);
 #endif
-  //  CacheInit(); // TBD! maybe mv to above.
-
+   //Osc32kExtCapCalibrate();//32KHz external oscillator calibration
+#ifdef FUNC_BREAKPOINT_EN
+   BP_LoadInfo();// TBD!
+#endif 
+ //  CacheInit(); // TBD! maybe mv to above.
+ //   WaitMs(1000);
 }
 
 void MCU_CLOCKS_NEEDED( void )
