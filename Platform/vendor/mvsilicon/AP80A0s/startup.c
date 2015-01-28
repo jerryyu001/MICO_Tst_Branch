@@ -18,18 +18,17 @@
 #define CFG_SYS_STACK_SIZE				(0x200)
 void reset_handler(void);
 void nmi_handler(void);
-void hardfault_handler(void);
+void hardfault_handler(void) __attribute__((weak));//TBD
 void memmanage_handler(void);
 void busfault_handler(void);
 void usagefault_handler(void);
 
+extern void vPortSVCHandler(void);
+extern void xPortPendSVHandler(void);
+extern void xPortSysTickHandler(void);
 //void svcall_interrupt(void); // __attribute__((weak));
 //void pendsv_interrupt(void); // __attribute__((weak));
 //void systick_interrupt(void); // __attribute__((weak));
-//void SysTick_Handler(void);
-extern void xPortPendSVHandler(void);
-extern void xPortSysTickHandler(void);
-extern void vPortSVCHandler(void);
 
 void GpioInterrupt(void) __attribute__((weak));//TBD
 void RtcInterrupt(void) __attribute__((weak));
@@ -305,17 +304,6 @@ nmi_handler PROC
         B       .
         ENDP
 
-hardfault_handler PROC
-        EXPORT  hardfault_handler			[WEAK]					    
-		IMPORT trapfault_handler_dumpstack
-		TST		LR,	#4
-		MRSEQ	R0,	MSP
-		MRSNE	R0,	PSP
-		PUSH	{R4-R11}
-		MRS		R1,	MSP
-		B		trapfault_handler_dumpstack
-		ENDP
- 
 memmanage_handler PROC
         EXPORT  memmanage_handler			[WEAK]					    
 		IMPORT trapfault_handler_dumpstack
@@ -349,6 +337,18 @@ usagefault_handler PROC
 		B		trapfault_handler_dumpstack
 		ENDP
 
+ 
+hardfault_handler PROC
+        EXPORT  hardfault_handler			[WEAK]					    
+		IMPORT trapfault_handler_dumpstack
+		TST		LR,	#4
+		MRSEQ	R0,	MSP
+		MRSNE	R0,	PSP
+		PUSH	{R4-R11}
+		MRS		R1,	MSP
+		B		trapfault_handler_dumpstack
+		ENDP
+ 
 svcall_interrupt    PROC
                 EXPORT  svcall_interrupt    [WEAK]
 				IMPORT vPortSVCHandler

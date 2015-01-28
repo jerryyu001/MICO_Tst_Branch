@@ -90,7 +90,6 @@ void startApplication( void ){
 * This a WEAK function.
 */
 WEAK void init_clocks( void ){
-
 }
 
 /* WEAK function */
@@ -120,8 +119,9 @@ void init_architecture( void) {
     //GD flash , True mean enable hpm.
     SpiFlashClkSet(FLASHCLK_SYSCLK_SEL,TRUE);
 
-  //  SarAdcLdoinVolInit();
-  //  LcdCtrlRegInit();
+    //SarAdcLdoinVolInit();
+    //LcdCtrlRegInit();
+   //Osc32kExtCapCalibrate();//32KHz external oscillator calibration
 
 #ifndef MICO_DISABLE_STDIO
 //    OsSetDebugFlag(1);
@@ -142,7 +142,9 @@ void init_architecture( void) {
    BP_LoadInfo();// TBD!
 #endif 
  //  CacheInit(); // TBD! maybe mv to above.
-    WdgFeed();
+ //   WdgFeed();
+    printf("System Clock : %d \n",ClkGetCurrentSysClkFreq());
+    printf("Flash Clock : %d \n",ClkFshcClkSelGet());
     printf("out init_architecture.\n");
 }
 

@@ -22,14 +22,14 @@ LR_FLASH 0x00000000 0x800000 - 255 * 1024 {;load region size_region
 	ER_MACH9 + 0 {*.o (.mach9.init) }	
 	
 	
-	ER_NOTIFY0 + 0 {*.o (.notify0.init) }
-	ER_NOTIFY1 + 0 {*.o (.notify*.init) }
-	ER_NOTIFY4 + 0 {*.o (.notify4.init) }
+;	ER_NOTIFY0 + 0 {*.o (.notify0.init) }
+;	ER_NOTIFY1 + 0 {*.o (.notify*.init) }
+;	ER_NOTIFY4 + 0 {*.o (.notify4.init) }
 	
 
-	ER_SHELL0 + 0 {*.o (.shell0.cmd) }
-	ER_SHELL1 + 0 {*.o (.shell1.cmd) }
-	ER_SHELL2 + 0 {*.o (.shell2.cmd) }
+;	ER_SHELL0 + 0 {*.o (.shell0.cmd) }
+;	ER_SHELL1 + 0 {*.o (.shell1.cmd) }
+;	ER_SHELL2 + 0 {*.o (.shell2.cmd) }
 	
 	ER_ROM_ANY + 0 {
 		.ANY (+RO)
