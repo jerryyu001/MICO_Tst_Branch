@@ -44,7 +44,7 @@ LR_FLASH 0x00000000 0x800000 - 255 * 1024 {;load region size_region
 
 	;if you want to change the RW_XMEM room,change this 0x20010000 
 	;for RW_XMEM end boundary only
-	RW_XMEM_END 0x20010000 - 4 UNINIT 4{
+	RW_XMEM_END 0x20020000 - 4 UNINIT 4{
 		*.o (PSP)
 	}
 

@@ -61,9 +61,11 @@ mico_mutex_t        stdio_rx_mutex;
 mico_mutex_t        stdio_tx_mutex;
 #endif /* #ifndef MICO_DISABLE_STDIO */
 
+//SPI_FLASH_INFO flash_info = {0};
+
 void Osc32kExtCapCalibrate(void){
     unsigned short Val;
-/*    char        cmd[3] = "\x35\xBA\x69";
+    char        cmd[3] = "\x35\xBA\x69";
     SPI_FLASH_INFO flash_info = {0};
 
     SpiFlashGetInfo(&flash_info);
@@ -71,7 +73,6 @@ void Osc32kExtCapCalibrate(void){
     if(SpiFlashIOCtl(IOCTL_FLASH_UNPROTECT, cmd, sizeof(cmd)) != FLASH_NONE_ERR){
         return;
     }
-*/
     if(SpiFlashRead(0xA0, (unsigned char*)&Val, 2) != FLASH_NONE_ERR){
         return;
     }
@@ -98,14 +99,13 @@ WEAK void init_memory( void ){
 }
 
 void init_architecture( void) {
-    
     ClkPorRcToDpll(0); // 0: 32768Hz, from Rc48MHz to Dpll sysclk 96Mhz 
     CacheInit(); // TBD! maybe mv to above.
     ClkModuleEn(MICO_MODULE_CLK_SWITCH);
     ClkModuleGateEn(MICO_MODULE_CLK_GATE_SWITCH);
 
     WaitMs(200);
-    WdgDis();//TBD!
+   // WdgDis();//TBD!
     
     SysGetWakeUpFlag();
 
@@ -138,12 +138,14 @@ void init_architecture( void) {
 #else  
 //   OsSetDebugFlag(0);
 #endif
-   //Osc32kExtCapCalibrate();//32KHz external oscillator calibration
+    printf("uart initialized.\n");
+   Osc32kExtCapCalibrate();//32KHz external oscillator calibration
 #ifdef FUNC_BREAKPOINT_EN
    BP_LoadInfo();// TBD!
 #endif 
  //  CacheInit(); // TBD! maybe mv to above.
- //   WaitMs(1000);
+    WdgFeed();
+    printf("out init_architecture.\n");
 }
 
 void MCU_CLOCKS_NEEDED( void )

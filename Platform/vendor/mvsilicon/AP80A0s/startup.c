@@ -15,7 +15,7 @@
 #include "platform_mico.h"
 #define CFG_SHELL_DEBUG
 #define OS_VERSION
-#define CFG_SYS_STACK_SIZE				(0x200)
+#define CFG_SYS_STACK_SIZE				(0x1000)
 void reset_handler(void);
 void nmi_handler(void);
 void hardfault_handler(void);
@@ -167,7 +167,7 @@ __asm void __bootup_stubs(void)
 	THUMB
     
 __heap_base     EQU     (0x20000000 + CFG_SYS_STACK_SIZE)
-__heap_limit    EQU     (0x20012000 + CFG_SYS_STACK_SIZE)
+__heap_limit    EQU     (0x20018000 + CFG_SYS_STACK_SIZE)
     
 __initial_sp	EQU		(0x20000000 + CFG_SYS_STACK_SIZE)
 	EXPORT		__initial_sp	

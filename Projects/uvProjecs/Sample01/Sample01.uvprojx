@@ -1437,14 +1437,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects\</OutputDirectory>
+          <OutputDirectory>..\..\..\Build\uvProj\Sample01\Objects\</OutputDirectory>
           <OutputName>Simple01_AP80</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\Listings\</ListingPath>
+          <ListingPath>..\..\..\Build\uvProj\Sample01\Listings\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -1738,7 +1738,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1789,7 +1789,7 @@
             <ScatterFile>..\..\..\Platform\vendor\mvsilicon\AP80A0s\MVs18.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--keep *.o(.mach*.init)  --keep *.o(.shell*.cmd)  --keep *.o(.notify*.init)  --keep *.o(.sched.stub*) --keep *.o(.driver*.isr) --keep *.o(CACHE.4KBMEM)
+            <Misc>--keep *.o(.mach*.init)  --keep *.o(.shell*.cmd) --keep *.o(.driver*.isr) --keep *.o(CACHE.4KBMEM)
 --diag_warning=6654,6238 --diag_suppress=L6314W,L6319W</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
