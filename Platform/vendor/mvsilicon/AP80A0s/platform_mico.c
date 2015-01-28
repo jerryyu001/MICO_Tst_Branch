@@ -99,6 +99,7 @@ WEAK void init_memory( void ){
 }
 
 void init_architecture( void) {
+
     ClkPorRcToDpll(0); // 0: 32768Hz, from Rc48MHz to Dpll sysclk 96Mhz 
     CacheInit(); // TBD! maybe mv to above.
     ClkModuleEn(MICO_MODULE_CLK_SWITCH);
@@ -124,9 +125,6 @@ void init_architecture( void) {
 
 #ifndef MICO_DISABLE_STDIO
 //    OsSetDebugFlag(1);
-//  GpioFuartRxIoConfig(1); //1.b[6] 0xFF disable rx.
-//  GpioFuartTxIoConfig(1);//1.b[7], FUART_TX_PORT
-//  FuartInit(115200, 8, 0, 1);//TBD
 #ifndef NO_MICO_RTOS
    mico_rtos_init_mutex( &stdio_tx_mutex );
    mico_rtos_unlock_mutex ( &stdio_tx_mutex );

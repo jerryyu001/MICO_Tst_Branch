@@ -13,9 +13,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 // #include "os.h"
 #include "platform_mico.h"
-#define CFG_SHELL_DEBUG
+//#define CFG_SHELL_DEBUG
 #define OS_VERSION
-#define CFG_SYS_STACK_SIZE				(0x1000)
+#define CFG_SYS_STACK_SIZE				(0x200)
 void reset_handler(void);
 void nmi_handler(void);
 void hardfault_handler(void);
@@ -23,9 +23,13 @@ void memmanage_handler(void);
 void busfault_handler(void);
 void usagefault_handler(void);
 
-void svcall_interrupt(void) __attribute__((weak));
-void pendsv_interrupt(void) __attribute__((weak));
-void systick_interrupt(void) __attribute__((weak));
+//void svcall_interrupt(void); // __attribute__((weak));
+//void pendsv_interrupt(void); // __attribute__((weak));
+//void systick_interrupt(void); // __attribute__((weak));
+//void SysTick_Handler(void);
+extern void xPortPendSVHandler(void);
+extern void xPortSysTickHandler(void);
+extern void vPortSVCHandler(void);
 
 void GpioInterrupt(void) __attribute__((weak));//TBD
 void RtcInterrupt(void) __attribute__((weak));
@@ -60,12 +64,12 @@ static void (*const vect_table[])(void) __attribute__((section("EXCEPT_VECTS")))
     0,							//#8 :Reserved
     0,							//#9 :Reserved
     0,							//#10:Reserved
-    svcall_interrupt,			//#11:SVCall Handler
+    vPortSVCHandler,			//#11:SVCall Handler
     0,							//#12:Debug Monitor Handler
     0,							//#13:Reserved
-    pendsv_interrupt,			//#14:PendSV Handler
-    systick_interrupt,			//#15:SysTick Handler
-	
+    xPortPendSVHandler,			//#14:PendSV Handler
+    xPortSysTickHandler,            //systick_interrupt,			//#15:SysTick Handler
+
 
     //-----------External Interrupts---------------------
     GpioInterrupt, 				//#16: GPIO 
@@ -88,7 +92,7 @@ static void (*const vect_table[])(void) __attribute__((section("EXCEPT_VECTS")))
 		
 void trapfault_handler_dumpstack(unsigned long* irqs_regs, unsigned long* user_regs)
 {
-	DBG("\n>>>>>>>>>>>>>>[");
+	DBG("\n>>>>>>j>>>>>>>>[");
 	switch(__get_IPSR())
 	{
 		case	3:
@@ -111,7 +115,7 @@ void trapfault_handler_dumpstack(unsigned long* irqs_regs, unsigned long* user_r
 			DBG("Unknown Fault %d", __get_IPSR());
 			break;
 	}
-	DBG(",corrupt,dump registers]>>>>>>>>>>>>>>>>>>\n");
+	DBG(",corrupt,dump registers]>>>>>>>>j>>j>>>>>>>>\n");
 
 	DBG("R0  = 0x%08X\n", irqs_regs[0]);
 	DBG("R1  = 0x%08X\n", irqs_regs[1]);
@@ -151,7 +155,7 @@ void trapfault_handler_dumpstack(unsigned long* irqs_regs, unsigned long* user_r
 	/*
 	 * indefinitely deadloop
 	 */
-	while(1);;;
+	while(1);
 }
 
 //******************************************************************************
@@ -230,7 +234,7 @@ __mv_main
 #ifdef OS_VERSION
 		LDR		SP,=mmm_pool_top 
 #else
-		LDR		SP,=0x20008000
+		LDR		SP,=0x20001000
 #endif 
 		SUB		SP,SP,#0x1000
 		LDR		R0,=__initial_sp
@@ -345,19 +349,19 @@ usagefault_handler PROC
 		B		trapfault_handler_dumpstack
 		ENDP
 
-SVC_Handler     PROC
-                EXPORT  SVC_Handler                [WEAK]
+svcall_interrupt    PROC
+                EXPORT  svcall_interrupt    [WEAK]
 				IMPORT vPortSVCHandler
                 B vPortSVCHandler
                 ENDP
 
-PendSV_Handler  PROC
-                EXPORT  PendSV_Handler             [WEAK]
+pendsv_interrupt    PROC
+                EXPORT  pendsv_interrupt    [WEAK]
 				IMPORT xPortPendSVHandler
                 B xPortPendSVHandler
                 ENDP
 
-SysTick_Handler PROC
+SysTick_Handler     PROC
                 EXPORT  SysTick_Handler            [WEAK]
                 IMPORT xPortSysTickHandler
                 B xPortSysTickHandler
