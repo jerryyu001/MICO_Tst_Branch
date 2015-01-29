@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'Sample01' 
- * Target:  'SimpleMico_AP80' 
+ * Target:  'Sample01' 
  */
 
 #ifndef RTE_COMPONENTS_H

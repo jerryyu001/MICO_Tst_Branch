@@ -89,8 +89,14 @@ typedef struct {
 } platform_uart_mapping_t;
 
 // Modules' clock used by MICO
-#define MICO_MODULE_CLK_SWITCH          ALL_MODULE_CLK_SWITCH
-#define MICO_MODULE_CLK_GATE_SWITCH     ALL_MODULE_CLK_GATE_SWITCH
+#define MICO_MODULE_CLK_SWITCH      FUART_CLK_EN |\
+                                    PHUB_CLK_EN |\
+                                    TIMER0_CLK_EN    
+//#define MICO_MODULE_CLK_SWITCH          ALL_MODULE_CLK_SWITCH
+
+#define MICO_MODULE_CLK_GATE_SWITCH     CACHE_CLK_GATE_EN | CM3_CLK_GATE_EN \
+             | XMEM_CLK_GATE_EN | GPIO_CLK_GATE_EN | ROM_CLK_GATE_EN | FSHC_CLK_GATE_EN
+//#define MICO_MODULE_CLK_GATE_SWITCH     ALL_MODULE_CLK_GATE_SWITCH
 
 extern const platform_uart_mapping_t uart_mapping[];
 
