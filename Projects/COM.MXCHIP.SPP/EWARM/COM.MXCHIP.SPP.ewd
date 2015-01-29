@@ -53,7 +53,7 @@
         </option>
         <option>
           <name>RunToName</name>
-          <state>main</state>
+          <state>application_start</state>
         </option>
         <option>
           <name>CExtraOptionsCheck</name>
@@ -830,7 +830,7 @@
         </option>
         <option>
           <name>CCJLinkInterfaceRadio</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>OCJLinkAttachSlave</name>

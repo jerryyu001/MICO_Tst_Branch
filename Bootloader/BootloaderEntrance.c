@@ -42,25 +42,9 @@
 extern void Main_Menu(void);
 extern OSStatus update(void);
 
-#ifdef SIZE_OPTIMIZE
-char menu[] =
+const char menu[] =
 "\r\n"
 "MICO Bootloader for %s, HARDWARE_REVISION: %s\r\n"
-<<<<<<< HEAD
-"0:BOOTUPDATE <-r>\r\n"
-"1:FWUPDATE <-r>\r\n"
-"2:DRIVERUPDATE <-r>\r\n"
-"3:PARAUPDATE <-r><-e>\r\n"
-"4:FLASHUPDATE  <-i><-s><-e><-r> <-start><-end>\r\n"
-"5:MEMORYMAP\r\n"
-"6:BOOT\r\n"
-"7:REBOOT\r\n";
-#else
-char menu[] =
-"\r\n"
-"MICO Bootloader for %s, HARDWARE_REVISION: %s\r\n"
-=======
->>>>>>> TestMode
 "+ command -------------------------+ function ------------+\r\n"
 "| 0:BOOTUPDATE    <-r>             | Update bootloader    |\r\n"
 "| 1:FWUPDATE      <-r>             | Update application   |\r\n"
@@ -78,7 +62,6 @@ char menu[] =
 "  -start flash start address -end flash start address\r\n"
 " Example: Input \"4 -i -start 0x400 -end 0x800\": Update internal\r\n"
 "          flash from 0x400 to 0x800\r\n";
-#endif
 
 int main(void)
 {
