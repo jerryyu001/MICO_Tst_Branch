@@ -38,6 +38,11 @@
 /*User provided configurations*/
 #define CONFIGURATION_VERSION               0x00000001 // if default configuration is changed, update this number
 
+#define UART_BUFFER_LENGTH                  12
+#define UART_ONE_PACKAGE_LENGTH             6
+
+
+
 /* Define thread stack size */
 #ifdef DEBUG
   #define STACK_SIZE_UART_RECV_THREAD           0x2A0
@@ -54,7 +59,9 @@
 /*Application's configuration stores in flash*/
 typedef struct{
   uint32_t          configDataVer;
-    uint32_t sample_led;
+  uint32_t          sample_led;
+  /*IO settings*/
+  uint32_t          USART_BaudRate;
 } application_config_t;
 
 typedef struct _current_app_status_t {
