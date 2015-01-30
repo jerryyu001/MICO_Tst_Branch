@@ -76,6 +76,7 @@ void uartRecv_thread(void *inContext)
   mico_Context_t *Context = inContext;
   int recvlen;
   uint8_t *inDataBuffer;
+ // char inData[UART_ONE_PACKAGE_LENGTH];
   
   inDataBuffer = malloc(UART_ONE_PACKAGE_LENGTH);
   require(inDataBuffer, exit);
@@ -85,8 +86,7 @@ void uartRecv_thread(void *inContext)
     recvlen = _uart_get_one_packet(inDataBuffer, UART_ONE_PACKAGE_LENGTH);
     if (recvlen <= 0)
       continue;
-      printf(".");
-    app_log("%s",*inDataBuffer);
+    MicoUartSend(UART_FOR_APP, (uint8_t *)inDataBuffer, recvlen);
   }
   
 exit:
