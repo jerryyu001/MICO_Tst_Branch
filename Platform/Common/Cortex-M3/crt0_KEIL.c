@@ -1,10 +1,10 @@
 /**
 ******************************************************************************
-* @file    MicoConfig.h 
+* @file    crt0_IAR.h 
 * @author  William Xu
 * @version V1.0.0
-* @date    05-May-2014
-* @brief   This file provide the MICO running constants.
+* @date    16-Sep-2014
+* @brief   __low_level_init called by IAR before main.
 ******************************************************************************
 *
 *  The MIT License
@@ -29,28 +29,37 @@
 ******************************************************************************
 */
 
-#include "Common.h"
-#include "MicoDefaults.h"
+#include "platform.h"
+#include "crt0.h"
 
-#ifdef MICO_DEFAULT_APPLICATION_STACK_SIZE
-uint32_t  app_stack_size = MICO_DEFAULT_APPLICATION_STACK_SIZE; 
+extern void* app_hdr_start_addr_loc;
+#define SCB_VTOR_ADDRESS         ( ( volatile unsigned long* ) 0xE000ED08 )
+#define APP_HDR_START_ADDR   ((unsigned char*)&app_hdr_start_addr_loc)
+  
+extern unsigned long Image$$ER_IROM1$$Base;
+
+int __low_level_init( void );
+
+/* This is the code that gets called on processor reset. To initialize the */
+/* device. */
+int __low_level_init( void )
+{
+     extern void init_clocks(void);
+     extern void init_memory(void);
+     /* IAR allows init functions in __low_level_init(), but it is run before global
+      * variables have been initialised, so the following init still needs to be done
+      * When using GCC, this is done in crt0_GCC.c
+      */
+     
+#ifdef BOOTLOADER  
+      /* Set the Vector Table base location at 0x20000000 */ 
+     *SCB_VTOR_ADDRESS = 0x20000000;
 #else
-uint32_t  app_stack_size = 1500;
+     /* Setup the interrupt vectors address */
+     *SCB_VTOR_ADDRESS = (unsigned long)&Image$$ER_IROM1$$Base;
+     init_clocks();
+     init_memory();
 #endif
 
-
-#ifdef  MICO_DEFAULT_TICK_RATE_HZ
-const uint32_t  mico_tick_rate_hz = MICO_DEFAULT_TICK_RATE_HZ;
-#else 
-const uint32_t  mico_tick_rate_hz = 1000; // Drfault OS tick is 1000Hz
-#endif
-
-const uint32_t  mico_timer_queue_len = 5;
-
-
-const uint32_t mico_nmode_enable = true;
-
-#ifdef DEBUG
-int mico_debug_enabled = 1;
-#endif
-
+     return 1; /* return 1 to force memory init */
+}

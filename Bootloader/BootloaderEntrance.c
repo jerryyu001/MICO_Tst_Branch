@@ -42,7 +42,8 @@
 extern void Main_Menu(void);
 extern OSStatus update(void);
 
-const char menu[] =
+#ifdef SIZE_OPTIMIZE
+char menu[] =
 "\r\n"
 "MICO Bootloader for %s, HARDWARE_REVISION: %s\r\n"
 "0:BOOTUPDATE <-r>\r\n"
@@ -74,6 +75,7 @@ char menu[] =
 "  -start flash start address -end flash start address\r\n"
 " Example: Input \"4 -i -start 0x400 -end 0x800\": Update internal\r\n"
 "          flash from 0x400 to 0x800\r\n";
+#endif
 
 int main(void)
 {

@@ -298,23 +298,6 @@ static void _watchdog_reload_timer_handler( void* arg )
 #endif 
 }
 
-static void mico_mfg_test(void)
-{
-  int ret;
-  extern int mfg_test(char *);
-  
-  ret = mfg_test("MXCHIP_CAGE");
-  if (ret == 0)
-    printf("MFG test success\r\n");
-  else {
-    if (ret & 1) 
-      printf("SCAN FAIL\r\n");
-    if (ret & 2)
-      printf("Connect AP FAIL\r\n");
-  }
-  
-  mico_thread_sleep(MICO_NEVER_TIMEOUT);
-}
 #if 0
 int application_start(void)
 {
