@@ -145,6 +145,10 @@ typedef enum
 
 #define STDIO_UART       MICO_UART_1
 #define MFG_TEST         MICO_UART_1
+<<<<<<< HEAD
+=======
+#define CLI_UART         MICO_UART_2
+>>>>>>> master
 
 /* Define the address from where user application will be loaded.
 Note: the 1st sector 0x08000000-0x08003FFF is reserved for the IAP code */

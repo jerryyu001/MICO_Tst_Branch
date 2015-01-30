@@ -13,11 +13,16 @@
 #include <rt_misc.h>
 #include "platform_common_config.h"
 #include "MicoPlatform.h"
+#include "stm32f2xx.h"
 
 #ifndef __MICROLIB
 //if comment semihosting , printf will not work. and must fputc but not putc
 #pragma import(__use_no_semihosting_swi)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 extern int  sendchar(int ch);  /* in Serial.c */
 extern int  getkey(void);      /* in Serial.c */
 extern long timeval;           /* in Time.c   */
@@ -25,7 +30,17 @@ extern long timeval;           /* in Time.c   */
 struct __FILE { int handle; /* Add whatever you need here */ };
 FILE __stdout;
 FILE __stdin;
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> master
 
+#if 0
+int putc(int ch, FILE *f) {
+  MicoUartSend( STDIO_UART, &ch, 1 );
+  return ch;
+}
+#else
 int fputc(int ch, FILE *f) {
 #if 1
   MicoUartSend( STDIO_UART, &ch, 1 );
@@ -38,6 +53,10 @@ int fputc(int ch, FILE *f) {
     return ch;
 #endif
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> master
 #if 0
 int fgetc(FILE *f) {
  // if (MicoUartRecv( STDIO_UART, c, 1, timeout )!=kNoErr)
@@ -66,6 +85,7 @@ void _ttywrch(int ch) {
 void _sys_exit(int return_code) {
   while (1);    /* endless loop */
 }
+<<<<<<< HEAD
 
 char *_sys_command_string (char *cmd, int len) 
 {
@@ -74,3 +94,9 @@ char *_sys_command_string (char *cmd, int len)
 #endif
 
 
+=======
+/*
+void HardFault_Handler (){
+   printf("HardFault.\n");
+}        */ 
+>>>>>>> master

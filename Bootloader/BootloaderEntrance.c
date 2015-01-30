@@ -45,6 +45,18 @@ extern OSStatus update(void);
 const char menu[] =
 "\r\n"
 "MICO Bootloader for %s, HARDWARE_REVISION: %s\r\n"
+"0:BOOTUPDATE <-r>\r\n"
+"1:FWUPDATE <-r>\r\n"
+"2:DRIVERUPDATE <-r>\r\n"
+"3:PARAUPDATE <-r><-e>\r\n"
+"4:FLASHUPDATE  <-i><-s><-e><-r> <-start><-end>\r\n"
+"5:MEMORYMAP\r\n"
+"6:BOOT\r\n"
+"7:REBOOT\r\n";
+#else
+char menu[] =
+"\r\n"
+"MICO Bootloader for %s, HARDWARE_REVISION: %s\r\n"
 "+ command -------------------------+ function ------------+\r\n"
 "| 0:BOOTUPDATE    <-r>             | Update bootloader    |\r\n"
 "| 1:FWUPDATE      <-r>             | Update application   |\r\n"
@@ -69,9 +81,9 @@ int main(void)
   init_memory();
   init_architecture();
   init_platform_bootloader();
-  
+
 #ifdef MICO_FLASH_FOR_UPDATE
-  update();
+   update();
 #endif
   
   /* BOOT_SEL = 1 => Normal start*/
@@ -87,4 +99,5 @@ int main(void)
     Main_Menu ();
   }
 }
+
 
