@@ -185,9 +185,12 @@ __Vectors_Size  EQU  __Vectors_End - __Vectors
 Reset_Handler    PROC
                  EXPORT  Reset_Handler             [WEAK]
         IMPORT  __main
+        IMPORT  __low_level_init
  ;                LDR     R1, =0x0800C000
  ;                LDR     R0, [R1]
   ;               MSR     MSP, R0
+         LDR     R0, =__low_level_init
+                 BLX     R0
 		 LDR     R0, =__main
                  BX      R0
                  ENDP

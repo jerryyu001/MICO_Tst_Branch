@@ -35,7 +35,7 @@
 
 #include "platform.h"
 #include "platform_common_config.h"
-#include "platform_driver_common.h"
+#include "mico_driver_common.h"
 /******************************************************
 *                    Constants
 ******************************************************/

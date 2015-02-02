@@ -37,7 +37,7 @@
 #include "MICOAppDefine.h"
 
 #include "StringUtils.h"
-#include "MICOSystemMonitor.h"
+//#include "MICOSystemMonitor.h"
 
 #if defined (CONFIG_MODE_EASYLINK) || defined (CONFIG_MODE_EASYLINK_WITH_SOFTAP)
 #include "EasyLink/EasyLink.h"
@@ -45,9 +45,9 @@
 #endif
 
 static mico_Context_t *context;
-static mico_timer_t _watchdog_reload_timer;
+//static mico_timer_t _watchdog_reload_timer;
 
-static mico_system_monitor_t mico_monitor;
+//static mico_system_monitor_t mico_monitor;
 
 #define mico_log(M, ...) custom_log("MICO", M, ##__VA_ARGS__)
 #define mico_log_trace() custom_log_trace("MICO")
@@ -55,12 +55,12 @@ static mico_system_monitor_t mico_monitor;
 WEAK void sendNotifySYSWillPowerOff(void){
 
 }
-
+/*
 static void _watchdog_reload_timer_handler( void* arg )
 {
   (void)(arg);
   MICOUpdateSystemMonitor(&mico_monitor, APPLICATION_WATCHDOG_TIMEOUT_SECONDS*1000-100);
-}
+}*/
 
 int application_start(void)
 {
@@ -83,7 +83,7 @@ int application_start(void)
   mico_log("Free memory %d bytes", MicoGetMemoryInfo()->free_memory) ; 
 
   mico_log("%s ver: %s, ", APP_INFO, MicoGetVer() );
-  err = MICOStartSystemMonitor(context);
+/*  err = MICOStartSystemMonitor(context);
   require_noerr_action( err, exit, mico_log("ERROR: Unable to start the system monitor.") );
 
   err = MICORegisterSystemMonitor(&mico_monitor, APPLICATION_WATCHDOG_TIMEOUT_SECONDS*1000);
@@ -91,12 +91,12 @@ int application_start(void)
     
   mico_init_timer(&_watchdog_reload_timer,APPLICATION_WATCHDOG_TIMEOUT_SECONDS*1000 - 100, _watchdog_reload_timer_handler, NULL);
   mico_start_timer(&_watchdog_reload_timer);
-  
+  */
   //MicoMcuPowerSaveConfig(true);
   
   err = MICOStartApplication( context );
   require_noerr( err, exit );
-
+/*
   while(mico_rtos_get_semaphore(&context->micoStatus.sys_state_change_sem, MICO_WAIT_FOREVER)==kNoErr){
     switch(context->micoStatus.sys_state){
       case eState_Normal:
@@ -121,9 +121,7 @@ int application_start(void)
       default:
             break;
     } 
-  } 
-  
-  require_noerr_action( err, exit, mico_log("Closing main thread with err num: %d.", err) );
+  } */
 
 exit:
   mico_rtos_delete_thread(NULL);
