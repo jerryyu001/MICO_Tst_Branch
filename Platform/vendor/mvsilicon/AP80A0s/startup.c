@@ -12,7 +12,7 @@
 //              2014-04-23 add 32KHz external oscillator capacitance input/output calibration value by Robert
 ///////////////////////////////////////////////////////////////////////////////
 // #include "os.h"
-#include "platform_mico.h"
+#include "mico_driver_common.h"
 //#define CFG_SHELL_DEBUG
 #define OS_VERSION
 #define CFG_SYS_STACK_SIZE				(0x200)

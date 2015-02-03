@@ -29,7 +29,7 @@
 #include "MicoPlatform.h"
 #include "PlatformInternal.h"
 #include "crt0.h"
-#include "platform_mico.h"
+#include "mico_driver_common.h"
 
 #ifdef __GNUC__
 #define WEAK __attribute__ ((weak))
