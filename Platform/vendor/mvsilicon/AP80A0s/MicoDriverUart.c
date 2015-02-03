@@ -32,7 +32,7 @@
 
 #include "MICORTOS.h"
 #include "MICOPlatform.h"
-#include "platform_mico.h"
+#include "mico_driver_common.h"
 
 #include "PlatformLogging.h"
 

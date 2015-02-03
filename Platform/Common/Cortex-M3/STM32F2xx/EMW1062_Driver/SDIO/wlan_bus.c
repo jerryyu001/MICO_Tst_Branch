@@ -258,7 +258,7 @@ static void sdio_disable_bus_irq( void )
 {
     SDIO->MASK = 0;
 }
-
+#if 0
 OSStatus host_enable_oob_interrupt( void )
 {
    /* Set GPIO_B[1:0] to input. One of them will be re-purposed as OOB interrupt */
@@ -268,6 +268,7 @@ OSStatus host_enable_oob_interrupt( void )
   
   return kNoErr;
 }
+#endif
 
 uint8_t host_platform_get_oob_interrupt_pin( void )
 {

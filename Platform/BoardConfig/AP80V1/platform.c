@@ -33,22 +33,10 @@
 
 #include "MICOPlatform.h"
 #include "platform_wifi_config.h"
-#include "platform_mico.h"
+#include "mico_driver_common.h"
 #include "PlatformLogging.h"
 
 const uint32_t mico_cpu_clock_hz = 96000000; //TBD!
-
-#ifdef __GNUC__
-#define WEAK __attribute__ ((weak))
-#elif defined ( __IAR_SYSTEMS_ICC__ )
-#define WEAK __weak
-#elif defined ( __CC_ARM ) //KEIL
-    #if !defined ( WEAK )
-    #define WEAK __weak
-    #endif
-#endif /* ifdef __GNUC__ */
-
-
 
 extern WEAK void PlatformEasyLinkButtonClickedCallback(void);
 extern WEAK void PlatformStandbyButtonClickedCallback(void);

@@ -14,8 +14,17 @@
 // #include "os.h"
 #include "mico_driver_common.h"
 //#define CFG_SHELL_DEBUG
+
+#if defined ( __CC_ARM )
+    #if defined ( WEAK )
+		#undef WEAK
+    #define WEAK weak
+    #endif
+#endif /* ifdef __GNUC__ */
+
 #define OS_VERSION
 #define CFG_SYS_STACK_SIZE				(0x200)
+
 void reset_handler(void);
 void nmi_handler(void);
 void hardfault_handler(void) __attribute__((weak));//TBD

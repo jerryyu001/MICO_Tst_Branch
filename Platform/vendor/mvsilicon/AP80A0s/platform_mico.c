@@ -28,7 +28,7 @@
 
 #include "MicoPlatform.h"
 #include "PlatformInternal.h"
-#include "crt0.h"
+//#include "crt0.h"
 #include "mico_driver_common.h"
 
 #ifdef __GNUC__

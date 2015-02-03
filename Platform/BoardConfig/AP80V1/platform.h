@@ -163,6 +163,9 @@ typedef enum
 /* The number of UART interfaces this hardware platform has */
 #define NUMBER_OF_UART_INTERFACES   2               //How many UARTs will use.
 #define STDIO_UART                  MICO_UART_1     //Which UART used as STDIO.
+#define UART_FOR_APP 				MICO_UART_1
+#define CLI_UART 						MICO_UART_2
+
 /* MICO UART 1 is Fuart default,change it in MICODriverUart */
 #define FUART_RX_PORT       1     //0, 1, 2, 0xFF, detail pls see gpio.h
 #define FUART_TX_PORT       1      //0, 1, 2, 0xFF, detail pls see gpio.h
